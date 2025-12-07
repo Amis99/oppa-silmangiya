@@ -2,6 +2,43 @@
 
 한국어 맞춤법/문법 학습 모바일 게임
 
+## 빠른 시작 (새 컴퓨터에서 설정하기)
+
+### 1. 저장소 클론
+```bash
+git clone https://github.com/Amis99/oppa-silmangiya.git
+cd oppa-silmangiya
+```
+
+### 2. 모바일 앱 설정
+```bash
+cd mobile
+npm install
+
+# 환경변수 설정 (중요!)
+cp .env.example .env
+# .env 파일을 열고 Firebase 설정값 입력
+```
+
+### 3. 관리자 대시보드 설정
+```bash
+cd ../admin
+npm install
+```
+
+### 4. 실행
+```bash
+# 모바일 앱 (mobile 폴더에서)
+npm start
+
+# 관리자 대시보드 (admin 폴더에서)
+npm run dev
+```
+
+> ⚠️ **중요**: `mobile/.env` 파일은 보안상 Git에 포함되지 않습니다. 기존 컴퓨터의 `.env` 파일 내용을 복사하거나, Firebase Console에서 설정값을 다시 가져와야 합니다.
+
+---
+
 ## 프로젝트 구조
 
 ```
