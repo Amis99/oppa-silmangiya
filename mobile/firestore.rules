@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 사용자 프로필 - 본인만 읽기/쓰기 가능
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 스테이지 데이터 - 모두 읽기 가능, 쓰기는 관리자만
+    match /stages/{stageId} {
+      allow read: if true;
+      allow write: if false; // Firebase Admin SDK 또는 콘솔에서만 관리
+    }
+
+    // 랭킹 데이터 - 모두 읽기 가능, 본인 점수만 쓰기 가능
+    match /rankings/{rankingId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow delete: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+
+    // 주간 랭킹 (자동 리셋 필요)
+    match /weeklyRankings/{weekId}/entries/{entryId} {
+      allow read: if true;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      allow update: if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+  }
+}
